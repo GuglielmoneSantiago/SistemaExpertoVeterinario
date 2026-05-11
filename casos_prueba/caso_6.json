@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-006",
+  "categoria": "toro",
+  "estado_general": "activo",
+  "apetito": "normal",
+  "presencia_diarrea": false,
+  "tipo_diarrea": "",
+  "distension_abdominal": false,
+  "movimientos_rumen": "normal",
+  "hidratacion": "normal",
+  "temperatura": "normal",
+  "tiempo_evolucion": "horas",
+  "cambios_alimentacion": false,
+  "observaciones": "Animal sin signos digestivos relevantes; caso de control negativo."
+}

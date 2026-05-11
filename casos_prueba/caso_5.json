@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-005",
+  "categoria": "ternero",
+  "estado_general": "postrado",
+  "apetito": "nulo",
+  "presencia_diarrea": true,
+  "tipo_diarrea": "liquida",
+  "distension_abdominal": false,
+  "movimientos_rumen": "reducida",
+  "hidratacion": "severa",
+  "temperatura": 39.4,
+  "tiempo_evolucion": "varios dias",
+  "cambios_alimentacion": false,
+  "observaciones": "Diarrea liquida persistente, no come y se observa muy deshidratado."
+}

@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-001",
+  "categoria": "vaca adulta",
+  "estado_general": "decaido",
+  "apetito": "bajo",
+  "presencia_diarrea": true,
+  "tipo_diarrea": "liquida",
+  "distension_abdominal": false,
+  "movimientos_rumen": "reducida",
+  "hidratacion": "leve",
+  "temperatura": 40.0,
+  "tiempo_evolucion": "1 dia",
+  "cambios_alimentacion": false,
+  "observaciones": "Animal con diarrea liquida, fiebre y menor consumo de alimento desde hace un dia."
+}

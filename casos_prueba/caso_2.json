@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-002",
+  "categoria": "ternero",
+  "estado_general": "postrado",
+  "apetito": "nulo",
+  "presencia_diarrea": true,
+  "tipo_diarrea": "con sangre",
+  "distension_abdominal": false,
+  "movimientos_rumen": "reducida",
+  "hidratacion": "severa",
+  "temperatura": 40.2,
+  "tiempo_evolucion": "varios dias",
+  "cambios_alimentacion": false,
+  "observaciones": "Diarrea con sangre, decaimiento severo y signos marcados de deshidratacion."
+}

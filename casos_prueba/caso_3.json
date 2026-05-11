@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-003",
+  "categoria": "novillo",
+  "estado_general": "decaido",
+  "apetito": "bajo",
+  "presencia_diarrea": false,
+  "tipo_diarrea": "",
+  "distension_abdominal": true,
+  "movimientos_rumen": "ausente",
+  "hidratacion": "normal",
+  "temperatura": "normal",
+  "tiempo_evolucion": "horas",
+  "cambios_alimentacion": true,
+  "observaciones": "Abdomen distendido luego de cambio de potrero y acceso a alimento nuevo."
+}

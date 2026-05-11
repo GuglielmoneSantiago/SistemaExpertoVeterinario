@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-AMB-001",
+  "categoria": "novillo",
+  "estado_general": "decaido",
+  "apetito": "bajo",
+  "presencia_diarrea": true,
+  "tipo_diarrea": "liquida",
+  "distension_abdominal": true,
+  "movimientos_rumen": "reducida",
+  "hidratacion": "leve",
+  "temperatura": 39.6,
+  "tiempo_evolucion": "horas",
+  "cambios_alimentacion": true,
+  "observaciones": "Caso limite: combina diarrea liquida con fiebre leve, distension abdominal y cambio reciente de dieta. Podria confundirse entre enteritis, timpanismo e indigestion."
+}

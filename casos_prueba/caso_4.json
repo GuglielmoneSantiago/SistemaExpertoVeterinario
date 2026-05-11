@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-004",
+  "categoria": "vaca adulta",
+  "estado_general": "decaido",
+  "apetito": "bajo",
+  "presencia_diarrea": true,
+  "tipo_diarrea": "pastosa",
+  "distension_abdominal": false,
+  "movimientos_rumen": "reducida",
+  "hidratacion": "normal",
+  "temperatura": "normal",
+  "tiempo_evolucion": "horas",
+  "cambios_alimentacion": true,
+  "observaciones": "Materia fecal pastosa y menor consumo despues de modificar la dieta."
+}
