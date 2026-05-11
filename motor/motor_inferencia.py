@@ -242,8 +242,13 @@ def validar_hechos(hechos: Hechos) -> list[str]:
             advertencias.append(f"Valor no reconocido para {clave}: {valor}.")
 
     # Rango amplio para detectar temperaturas bovinas claramente improbables.
+    # Los extremos <20 y >50 tienen reglas especiales, por eso no se advierten aqui.
     temperatura = hechos.get("temperatura")
-    if isinstance(temperatura, (int, float)) and not 35.0 <= float(temperatura) <= 43.5:
+    if (
+        isinstance(temperatura, (int, float))
+        and not 35.0 <= float(temperatura) <= 43.5
+        and not (float(temperatura) < 20.0 or float(temperatura) > 50.0)
+    ):
         advertencias.append("La temperatura ingresada esta fuera del rango bovino esperado.")
 
     return advertencias

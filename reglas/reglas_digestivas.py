@@ -147,6 +147,18 @@ def _temperatura_baja(hechos: Hechos) -> bool:
     return _esta_en(hechos, "temperatura", {"baja", "hipotermia"})
 
 
+def _temperatura_mayor_a_50(hechos: Hechos) -> bool:
+    # Regla especial solicitada: temperaturas mayores a 50 activan conclusion de asado.
+    temperatura = _temperatura_float(hechos)
+    return temperatura is not None and temperatura > 50.0
+
+
+def _temperatura_menor_a_20(hechos: Hechos) -> bool:
+    # Regla especial solicitada: temperaturas menores a 20 activan conclusion de freezer.
+    temperatura = _temperatura_float(hechos)
+    return temperatura is not None and temperatura < 20.0
+
+
 def _sin_diarrea_o_no_indicada(hechos: Hechos) -> bool:
     # Se usa en reglas como timpanismo, donde la ausencia de diarrea refuerza el patron.
     return not _es_verdadero(hechos, "presencia_diarrea")
@@ -207,6 +219,8 @@ def derivar_hechos_digestivos(hechos: Hechos) -> Hechos:
     derivados["fiebre"] = _temperatura_elevada(hechos)
     derivados["fiebre_muy_alta"] = _temperatura_muy_alta(hechos)
     derivados["hipotermia"] = _temperatura_baja(hechos)
+    derivados["temperatura_mayor_a_50"] = _temperatura_mayor_a_50(hechos)
+    derivados["temperatura_menor_a_20"] = _temperatura_menor_a_20(hechos)
     derivados["diarrea_con_sangre"] = _diarrea_tipo("con sangre", "sangre")(hechos)
     derivados["diarrea_con_moco"] = _diarrea_tipo("con moco", "moco")(hechos)
     derivados["rumen_comprometido"] = _rumen("reducida", "ausente")(hechos)
@@ -225,6 +239,32 @@ def _hecho(clave: str) -> Predicado:
 
 
 REGLAS_DIGESTIVAS: tuple[ReglaDigestiva, ...] = (
+    ReglaDigestiva(
+        codigo="RD-08",
+        nombre="Temperatura extrema mayor a 50",
+        diagnostico="Se te quema el asado",
+        confianza_base=1.0,
+        gravedad="grave",
+        accion_recomendada="Sacale un poco de brasa a la parrilla",
+        requiere_veterinario=False,
+        condiciones=(
+            Condicion("temperatura mayor a 50 C", _hecho("temperatura_mayor_a_50"), 1.0),
+        ),
+        condiciones_requeridas=(_hecho("temperatura_mayor_a_50"),),
+    ),
+    ReglaDigestiva(
+        codigo="RD-09",
+        nombre="Temperatura extrema menor a 20",
+        diagnostico="Saca la carne del frezzer",
+        confianza_base=1.0,
+        gravedad="leve",
+        accion_recomendada="Baja la carne a la heladera",
+        requiere_veterinario=False,
+        condiciones=(
+            Condicion("temperatura menor a 20 C", _hecho("temperatura_menor_a_20"), 1.0),
+        ),
+        condiciones_requeridas=(_hecho("temperatura_menor_a_20"),),
+    ),
     ReglaDigestiva(
         codigo="RD-01",
         nombre="Diarrea infecciosa o enteritis",
@@ -383,6 +423,16 @@ def evaluar_reglas_digestivas(hechos: Hechos) -> list[dict[str, Any]]:
         for regla in REGLAS_DIGESTIVAS
         if (conclusion := regla.evaluar(hechos_derivados)) is not None
     ]
+    # Las reglas especiales de temperatura extrema son excluyentes: si aparecen,
+    # se muestran solas para no mezclar la conclusion solicitada con hipotesis clinicas.
+    conclusiones_extremas = [
+        conclusion
+        for conclusion in conclusiones
+        if conclusion.get("codigo_regla") in {"RD-08", "RD-09"}
+    ]
+    if conclusiones_extremas:
+        return sorted(conclusiones_extremas, key=lambda item: item["nivel_confianza"], reverse=True)
+
     # La GUI y el motor toman como principal la primera conclusion de esta lista.
     return sorted(conclusiones, key=lambda item: item["nivel_confianza"], reverse=True)
 

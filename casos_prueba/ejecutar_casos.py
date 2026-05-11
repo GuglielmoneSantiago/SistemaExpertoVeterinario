@@ -23,6 +23,8 @@ CASOS_ESPERADOS = {
     "caso_6.json": "Sin diagnostico digestivo concluyente",
     "caso_ambiguo.json": "Diarrea infecciosa / enteritis",
     "caso_hipotermia.json": "Hipotermia / posible shock digestivo o septicemia",
+    "caso_asado.json": "Se te quema el asado",
+    "caso_frezzer.json": "Saca la carne del frezzer",
 }
 
 

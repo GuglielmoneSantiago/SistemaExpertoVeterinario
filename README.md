@@ -100,6 +100,8 @@ TP2/
     caso_6.json
     caso_ambiguo.json
     caso_hipotermia.json
+    caso_asado.json
+    caso_frezzer.json
     ejecutar_casos.py
 ```
 
@@ -117,6 +119,8 @@ Los casos JSON permiten probar distintas combinaciones de entradas:
 | `caso_6.json` | Signos normales, sin diarrea ni distension | Sin diagnostico digestivo concluyente |
 | `caso_ambiguo.json` | Diarrea liquida con fiebre leve, distension abdominal, rumen reducido y cambio de alimentacion | Diarrea infecciosa / enteritis |
 | `caso_hipotermia.json` | Temperatura menor a 37 C, postracion, apetito nulo, rumen ausente y deshidratacion severa | Hipotermia / posible shock digestivo o septicemia |
+| `caso_asado.json` | Temperatura mayor a 50 C | Se te quema el asado |
+| `caso_frezzer.json` | Temperatura menor a 20 C | Saca la carne del frezzer |
 
 ## Regla de hipotermia
 
@@ -127,6 +131,17 @@ Cuando se detecta hipotermia junto con signos de compromiso general, como postra
 `Hipotermia / posible shock digestivo o septicemia`
 
 Esta hipotesis se considera grave y requiere contactar a un veterinario de urgencia, porque una temperatura menor a 37 C puede indicar shock, septicemia o compromiso sistemico severo.
+
+## Reglas especiales de temperatura extrema
+
+Tambien se agregaron dos reglas especiales solicitadas para temperaturas fuera del contexto veterinario habitual:
+
+| Condicion | Conclusion |
+|---|---|
+| Temperatura mayor a 50 C | Se te quema el asado |
+| Temperatura menor a 20 C | Saca la carne del frezzer |
+
+Estas reglas tienen prioridad alta para que, si se ingresa una temperatura extrema, la conclusion principal sea el mensaje correspondiente.
 
 ## Caso ambiguo
 

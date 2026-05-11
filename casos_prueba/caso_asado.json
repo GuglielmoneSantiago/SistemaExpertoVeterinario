@@ -1,0 +1,15 @@
+{
+  "identificador": "BOV-ASADO-001",
+  "categoria": "vaca adulta",
+  "estado_general": "activo",
+  "apetito": "normal",
+  "presencia_diarrea": false,
+  "tipo_diarrea": "",
+  "distension_abdominal": false,
+  "movimientos_rumen": "normal",
+  "hidratacion": "normal",
+  "temperatura": 51.0,
+  "tiempo_evolucion": "horas",
+  "cambios_alimentacion": false,
+  "observaciones": "Caso especial para validar la regla de temperatura mayor a 50 grados."
+}
