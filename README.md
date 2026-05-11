@@ -62,6 +62,10 @@ El productor ingresa observaciones simples del animal:
 | `temperatura` | normal, baja, hipotermia, elevada, muy alta o valor numerico |
 | `tiempo_evolucion` | horas, 1 dia o varios dias |
 | `cambios_alimentacion` | indica si hubo cambios recientes de dieta |
+| `inquietud` | indica si el animal esta inquieto o se mueve de forma anormal |
+| `dificultad_respiratoria` | indica si respira con esfuerzo |
+| `exceso_pasturas_tiernas` | indica acceso reciente a pasturas jovenes o muy fermentables |
+| `consumo_leguminosas` | indica consumo de alfalfa, trebol u otras leguminosas |
 
 ## Salidas principales
 
@@ -102,6 +106,7 @@ SistemaExpertoVeterinario/
     caso_hipotermia.json
     caso_asado.json
     caso_frezzer.json
+    caso_empaste.json
     ejecutar_casos.py
 ```
 
@@ -113,7 +118,7 @@ Los casos JSON permiten probar distintas combinaciones de entradas:
 |---|---|---|
 | `caso_1.json` | Diarrea liquida, fiebre, decaimiento e hidratacion leve | Diarrea infecciosa / enteritis |
 | `caso_2.json` | Diarrea con sangre, postracion, apetito nulo y deshidratacion severa | Coccidiosis / lesion intestinal con diarrea sanguinolenta |
-| `caso_3.json` | Distension abdominal, rumen ausente, sin diarrea y cambio de alimentacion | Timpanismo / empaste ruminal |
+| `caso_3.json` | Distension abdominal, rumen ausente, sin diarrea y cambio de alimentacion | Empaste (Timpanismo ruminal) |
 | `caso_4.json` | Cambio de alimentacion, apetito bajo, rumen reducido y diarrea pastosa | Indigestion digestiva / posible acidosis ruminal |
 | `caso_5.json` | Diarrea liquida prolongada, postracion y deshidratacion severa | Deshidratacion asociada a cuadro digestivo |
 | `caso_6.json` | Signos normales, sin diarrea ni distension | Sin diagnostico digestivo concluyente |
@@ -121,6 +126,13 @@ Los casos JSON permiten probar distintas combinaciones de entradas:
 | `caso_hipotermia.json` | Temperatura menor a 37 C, postracion, apetito nulo, rumen ausente y deshidratacion severa | Hipotermia / posible shock digestivo o septicemia |
 | `caso_asado.json` | Temperatura mayor a 50 C | Se te quema el asado |
 | `caso_frezzer.json` | Temperatura menor a 20 C | Saca la carne del frezzer |
+| `caso_empaste.json` | Sin diarrea, distension abdominal izquierda, apetito nulo, rumia ausente, inquietud, dificultad respiratoria, pasturas tiernas y leguminosas | Empaste (Timpanismo ruminal) |
+
+## Regla de empaste
+
+La regla de `Empaste (Timpanismo ruminal)` se activa especialmente cuando el animal no presenta diarrea y tiene distension abdominal, falta de apetito y disminucion o ausencia de rumia. Tambien suma evidencia si hay inquietud o dificultad respiratoria, que puede aparecer en casos graves.
+
+Como factores predisponentes, la regla considera cambios bruscos de alimentacion, exceso de pasturas tiernas y consumo de leguminosas como alfalfa o trebol. Si la distension aumenta o aparece dificultad respiratoria, el sistema recomienda contactar al veterinario de inmediato.
 
 ## Regla de hipotermia
 

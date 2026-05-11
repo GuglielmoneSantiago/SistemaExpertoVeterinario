@@ -46,6 +46,16 @@ VARIABLES_ENTRADA = (
     "cambios_alimentacion",
 )
 
+VARIABLES_BOOLEANAS = {
+    "presencia_diarrea",
+    "distension_abdominal",
+    "cambios_alimentacion",
+    "inquietud",
+    "dificultad_respiratoria",
+    "exceso_pasturas_tiernas",
+    "consumo_leguminosas",
+}
+
 VALORES_VALIDOS = {
     "estado_general": {"activo", "decaido", "postrado"},
     "apetito": {"normal", "bajo", "nulo"},
@@ -191,7 +201,7 @@ def normalizar_hechos(hechos: Hechos) -> tuple[Hechos, list[str]]:
 
     # Cada clave se normaliza segun su tipo esperado.
     for clave, valor in hechos.items():
-        if clave in {"presencia_diarrea", "distension_abdominal", "cambios_alimentacion"}:
+        if clave in VARIABLES_BOOLEANAS:
             booleano = _normalizar_booleano(valor)
             if booleano is None:
                 # Se mantiene el valor original si no se pudo interpretar, pero se avisa.

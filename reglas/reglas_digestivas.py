@@ -230,6 +230,15 @@ def derivar_hechos_digestivos(hechos: Hechos) -> Hechos:
     derivados["deshidratacion_severa"] = _hidratacion("severa")(hechos)
     derivados["cuadro_prolongado"] = _tiempo("varios dias", "varios dias")(hechos)
     derivados["cambio_dieta"] = _es_verdadero(hechos, "cambios_alimentacion")
+    derivados["inquietud"] = _es_verdadero(hechos, "inquietud")
+    derivados["dificultad_respiratoria"] = _es_verdadero(hechos, "dificultad_respiratoria")
+    derivados["exceso_pasturas_tiernas"] = _es_verdadero(hechos, "exceso_pasturas_tiernas")
+    derivados["consumo_leguminosas"] = _es_verdadero(hechos, "consumo_leguminosas")
+    derivados["factor_alimentario_empaste"] = (
+        derivados["cambio_dieta"]
+        or derivados["exceso_pasturas_tiernas"]
+        or derivados["consumo_leguminosas"]
+    )
     return derivados
 
 
@@ -308,23 +317,28 @@ REGLAS_DIGESTIVAS: tuple[ReglaDigestiva, ...] = (
     ),
     ReglaDigestiva(
         codigo="RD-03",
-        nombre="Timpanismo o empaste",
-        diagnostico="Timpanismo / empaste ruminal",
-        confianza_base=0.88,
+        nombre="Empaste o timpanismo ruminal",
+        diagnostico="Empaste (Timpanismo ruminal)",
+        confianza_base=0.9,
         gravedad="grave",
         accion_recomendada=(
-            "Retirar alimento fermentable, evitar que el animal se eche y llamar al "
-            "veterinario de inmediato si la distension aumenta o hay dificultad."
+            "Retirar al animal de pasturas tiernas o leguminosas, evitar que se eche, "
+            "mantenerlo en observacion y llamar al veterinario de inmediato si la "
+            "distension aumenta o hay dificultad respiratoria."
         ),
         requiere_veterinario=True,
         condiciones=(
-            Condicion("distension abdominal", lambda hechos: _es_verdadero(hechos, "distension_abdominal"), 1.5),
-            Condicion("movimientos ruminales reducidos o ausentes", _hecho("rumen_comprometido"), 1.1),
-            Condicion("sin diarrea marcada", _sin_diarrea_o_no_indicada, 0.6),
-            Condicion("cambio reciente de alimentacion", _hecho("cambio_dieta"), 0.8),
-            Condicion("estado general decaido o postrado", _estado_general("decaido", "postrado"), 0.8),
+            Condicion("no presenta diarrea", _sin_diarrea_o_no_indicada, 1.2),
+            Condicion("distension abdominal, frecuente del lado izquierdo", lambda hechos: _es_verdadero(hechos, "distension_abdominal"), 1.5),
+            Condicion("falta de apetito", _apetito("bajo", "nulo"), 1.0),
+            Condicion("disminucion o ausencia de rumia", _hecho("rumen_comprometido"), 1.2),
+            Condicion("inquietud", _hecho("inquietud"), 0.7),
+            Condicion("dificultad respiratoria en caso grave", _hecho("dificultad_respiratoria"), 0.9),
+            Condicion("cambio brusco de alimentacion, pasturas tiernas o leguminosas", _hecho("factor_alimentario_empaste"), 1.0),
         ),
-        condiciones_requeridas=(lambda hechos: _es_verdadero(hechos, "distension_abdominal"),),
+        condiciones_requeridas=(
+            lambda hechos: _es_verdadero(hechos, "distension_abdominal"),
+        ),
     ),
     ReglaDigestiva(
         codigo="RD-04",
@@ -342,7 +356,6 @@ REGLAS_DIGESTIVAS: tuple[ReglaDigestiva, ...] = (
             Condicion("apetito bajo o nulo", _apetito("bajo", "nulo"), 1.0),
             Condicion("movimientos ruminales reducidos", _rumen("reducida"), 0.9),
             Condicion("diarrea pastosa o liquida", _diarrea_tipo("pastosa", "liquida"), 0.7),
-            Condicion("temperatura normal", lambda hechos: not _temperatura_elevada(hechos), 0.5),
         ),
         condiciones_requeridas=(
             lambda hechos: hechos.get("cambio_dieta") or _rumen("reducida")(hechos),

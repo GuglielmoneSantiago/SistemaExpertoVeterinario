@@ -42,8 +42,8 @@ class InterfazGraficaProductor(tk.Tk):
         # Inicializa la ventana principal de Tkinter.
         super().__init__()
         self.title("Sistema Experto Veterinario")
-        self.geometry("1020x680")
-        self.minsize(900, 620)
+        self.geometry("1020x760")
+        self.minsize(900, 700)
 
         # Se guardan referencias a widgets y estado para usarlos desde callbacks.
         self.umbral_confianza = umbral_confianza
@@ -54,6 +54,7 @@ class InterfazGraficaProductor(tk.Tk):
         self.marco_resultado: ttk.LabelFrame | None = None
         self.boton_guia: ttk.Button | None = None
         self.boton_reglas_aplicadas: ttk.Button | None = None
+        self.boton_copiar_diagnostico: ttk.Button | None = None
         self.observaciones_texto: tk.Text | None = None
         self.resultado_texto: scrolledtext.ScrolledText | None = None
         self.ultimo_resultado: dict[str, Any] | None = None
@@ -149,6 +150,10 @@ class InterfazGraficaProductor(tk.Tk):
         fila = self._agregar_entrada(padre, fila, "Temperatura", "temperatura")
         fila = self._agregar_selector(padre, fila, "Tiempo de evolucion", "tiempo_evolucion", OPCIONES_TIEMPO)
         fila = self._agregar_selector(padre, fila, "Cambios de alimentacion", "cambios_alimentacion", OPCIONES_CAMBIOS)
+        fila = self._agregar_selector(padre, fila, "Inquietud", "inquietud", OPCIONES_CAMBIOS)
+        fila = self._agregar_selector(padre, fila, "Dificultad respiratoria", "dificultad_respiratoria", OPCIONES_CAMBIOS)
+        fila = self._agregar_selector(padre, fila, "Exceso de pasturas tiernas", "exceso_pasturas_tiernas", OPCIONES_CAMBIOS)
+        fila = self._agregar_selector(padre, fila, "Consumo de leguminosas", "consumo_leguminosas", OPCIONES_CAMBIOS)
 
         ttk.Label(padre, text="Observaciones").grid(row=fila, column=0, sticky="nw", pady=5)
         self.observaciones_texto = tk.Text(padre, height=4, wrap="word")
@@ -208,12 +213,22 @@ class InterfazGraficaProductor(tk.Tk):
         self.resultado_texto.tag_configure("titulo", font=("Consolas", 10, "bold"))
         self.resultado_texto.grid(row=1, column=0, sticky="nsew")
 
+        # Boton inferior para copiar al portapapeles el diagnostico principal.
+        self.boton_copiar_diagnostico = ttk.Button(
+            padre,
+            text="Copiar diagnostico",
+            command=self.copiar_diagnostico,
+            style="Accion.TButton",
+            state="disabled",
+        )
+        self.boton_copiar_diagnostico.grid(row=2, column=0, sticky="ew", pady=(10, 0))
+
         # Aviso fijo que queda visible bajo cualquier resultado.
         ttk.Label(
             padre,
             text="El sistema no reemplaza la evaluacion de un veterinario.",
             style="Subtitulo.TLabel",
-        ).grid(row=2, column=0, sticky="w", pady=(10, 0))
+        ).grid(row=3, column=0, sticky="w", pady=(10, 0))
 
     def _crear_guia(self, padre: ttk.Frame) -> None:
         # Encabezado de la vista guia con boton para volver a la consulta.
@@ -299,6 +314,22 @@ Ejemplo: horas si empezo recientemente; 1 dia si lleva aproximadamente un dia; v
 Cambios de alimentacion
 Indica si hubo modificaciones recientes en dieta, pastura, balanceado o acceso a alimento fermentable.
 Ejemplo: si, cuando se cambio de lote o se agrego alimento nuevo; no, cuando la dieta no cambio.
+
+Inquietud
+Indica si el animal se muestra nervioso, se mueve de forma anormal o no logra permanecer tranquilo.
+Ejemplo: si, cuando camina, se mira el flanco o cambia de posicion repetidamente.
+
+Dificultad respiratoria
+Indica si se observa respiracion forzada o incomodidad para respirar, especialmente con distension abdominal.
+Ejemplo: si, cuando respira con esfuerzo o parece agitado.
+
+Exceso de pasturas tiernas
+Indica si tuvo acceso reciente a abundante pastura joven o muy fermentable.
+Ejemplo: si, cuando entro a un lote con pasto tierno luego de restriccion o cambio brusco.
+
+Consumo de leguminosas
+Indica si consumio alfalfa, trebol u otras leguminosas asociadas a empaste.
+Ejemplo: si, cuando el potrero o la dieta tiene predominio de leguminosas.
 
 Observaciones
 Permite agregar informacion libre que ayude a interpretar el caso, aunque no modifica directamente las reglas.
@@ -403,6 +434,10 @@ Uso recomendado
             "temperatura": self.variables["temperatura"].get().strip(),
             "tiempo_evolucion": self.variables["tiempo_evolucion"].get(),
             "cambios_alimentacion": self._si_no_a_booleano(self.variables["cambios_alimentacion"].get()),
+            "inquietud": self._si_no_a_booleano(self.variables["inquietud"].get()),
+            "dificultad_respiratoria": self._si_no_a_booleano(self.variables["dificultad_respiratoria"].get()),
+            "exceso_pasturas_tiernas": self._si_no_a_booleano(self.variables["exceso_pasturas_tiernas"].get()),
+            "consumo_leguminosas": self._si_no_a_booleano(self.variables["consumo_leguminosas"].get()),
             "observaciones": self._obtener_texto_observaciones(),
         }
         # Si no hay diarrea, tipo_diarrea no participa en las reglas.
@@ -449,6 +484,10 @@ Uso recomendado
             "temperatura": "normal",
             "tiempo_evolucion": "horas",
             "cambios_alimentacion": "no",
+            "inquietud": "no",
+            "dificultad_respiratoria": "no",
+            "exceso_pasturas_tiernas": "no",
+            "consumo_leguminosas": "no",
         }
         # Se actualizan las StringVar; esto tambien dispara traces como tipo_diarrea.
         for clave, valor in valores_iniciales.items():
@@ -464,6 +503,8 @@ Uso recomendado
         self._actualizar_titulo_resultado("Conclusion y diagnostico")
         if self.boton_reglas_aplicadas is not None:
             self.boton_reglas_aplicadas.configure(text="Reglas aplicadas", state="disabled")
+        if self.boton_copiar_diagnostico is not None:
+            self.boton_copiar_diagnostico.configure(state="disabled")
 
         # Mensaje inicial del panel derecho.
         self._mostrar_texto(
@@ -484,6 +525,10 @@ Uso recomendado
         self.variables["temperatura"].set(str(datos.get("temperatura", "normal")))
         self.variables["tiempo_evolucion"].set(str(datos.get("tiempo_evolucion", "horas")))
         self.variables["cambios_alimentacion"].set("si" if datos.get("cambios_alimentacion") else "no")
+        self.variables["inquietud"].set("si" if datos.get("inquietud") else "no")
+        self.variables["dificultad_respiratoria"].set("si" if datos.get("dificultad_respiratoria") else "no")
+        self.variables["exceso_pasturas_tiernas"].set("si" if datos.get("exceso_pasturas_tiernas") else "no")
+        self.variables["consumo_leguminosas"].set("si" if datos.get("consumo_leguminosas") else "no")
 
         # Las observaciones se cargan en el widget de texto multilnea.
         if self.observaciones_texto is not None:
@@ -500,6 +545,8 @@ Uso recomendado
         self._actualizar_titulo_resultado("Conclusion y diagnostico")
         if self.boton_reglas_aplicadas is not None:
             self.boton_reglas_aplicadas.configure(text="Reglas aplicadas", state="normal")
+        if self.boton_copiar_diagnostico is not None:
+            self.boton_copiar_diagnostico.configure(state="normal")
 
         # Se habilita temporalmente el widget para reemplazar su contenido.
         self.resultado_texto.configure(state="normal")
@@ -529,6 +576,25 @@ Uso recomendado
 
         # Se vuelve a bloquear la edicion manual del resultado.
         self.resultado_texto.configure(state="disabled")
+
+    def copiar_diagnostico(self) -> None:
+        """Copia todo el texto visible del panel de resultado al portapapeles."""
+
+        # Solo se puede copiar si ya existe un resultado generado por el motor y el widget.
+        if self.ultimo_resultado is None or self.resultado_texto is None:
+            messagebox.showinfo("Sin diagnostico", "Primero ejecute un diagnostico.")
+            return
+
+        # Se toma exactamente el texto que esta mostrando el panel derecho.
+        texto_resultado = self.resultado_texto.get("1.0", "end").strip()
+        if not texto_resultado:
+            messagebox.showinfo("Sin diagnostico", "No hay texto para copiar.")
+            return
+
+        self.clipboard_clear()
+        self.clipboard_append(texto_resultado)
+        self.update()
+        messagebox.showinfo("Texto copiado", "La conclusion y diagnostico fueron copiados al portapapeles.")
 
     def alternar_resultado_reglas(self) -> None:
         """Alterna entre conclusion diagnostica y reglas aplicadas."""

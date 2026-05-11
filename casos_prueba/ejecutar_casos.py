@@ -17,7 +17,7 @@ from modelos.bovino import crear_bovino_desde_formulario  # noqa: E402
 CASOS_ESPERADOS = {
     "caso_1.json": "Diarrea infecciosa / enteritis",
     "caso_2.json": "Coccidiosis / lesion intestinal con diarrea sanguinolenta",
-    "caso_3.json": "Timpanismo / empaste ruminal",
+    "caso_3.json": "Empaste (Timpanismo ruminal)",
     "caso_4.json": "Indigestion digestiva / posible acidosis ruminal",
     "caso_5.json": "Deshidratacion asociada a cuadro digestivo",
     "caso_6.json": "Sin diagnostico digestivo concluyente",
@@ -25,6 +25,7 @@ CASOS_ESPERADOS = {
     "caso_hipotermia.json": "Hipotermia / posible shock digestivo o septicemia",
     "caso_asado.json": "Se te quema el asado",
     "caso_frezzer.json": "Saca la carne del frezzer",
+    "caso_empaste.json": "Empaste (Timpanismo ruminal)",
 }
 
 

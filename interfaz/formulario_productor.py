@@ -122,6 +122,10 @@ def cargar_datos_interactivos() -> DatosFormulario:
         "temperatura": preguntar_temperatura(),
         "tiempo_evolucion": preguntar_opcion("Tiempo de evolucion de los sintomas", OPCIONES_TIEMPO),
         "cambios_alimentacion": preguntar_si_no("Hubo cambios recientes en la alimentacion"),
+        "inquietud": preguntar_si_no("El animal presenta inquietud"),
+        "dificultad_respiratoria": preguntar_si_no("Presenta dificultad respiratoria"),
+        "exceso_pasturas_tiernas": preguntar_si_no("Tuvo exceso de pasturas tiernas"),
+        "consumo_leguminosas": preguntar_si_no("Consumio leguminosas como alfalfa o trebol"),
         "observaciones": preguntar_texto("Observaciones adicionales"),
     }
 
@@ -199,6 +203,10 @@ def datos_demo() -> DatosFormulario:
         "temperatura": 40.0,
         "tiempo_evolucion": "1 dia",
         "cambios_alimentacion": False,
+        "inquietud": False,
+        "dificultad_respiratoria": False,
+        "exceso_pasturas_tiernas": False,
+        "consumo_leguminosas": False,
         "observaciones": "Caso de demostracion.",
     }
 

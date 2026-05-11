@@ -1,0 +1,19 @@
+{
+  "identificador": "BOV-EMP-001",
+  "categoria": "vaca adulta",
+  "estado_general": "decaido",
+  "apetito": "nulo",
+  "presencia_diarrea": false,
+  "tipo_diarrea": "",
+  "distension_abdominal": true,
+  "movimientos_rumen": "ausente",
+  "hidratacion": "normal",
+  "temperatura": "normal",
+  "tiempo_evolucion": "horas",
+  "cambios_alimentacion": true,
+  "inquietud": true,
+  "dificultad_respiratoria": true,
+  "exceso_pasturas_tiernas": true,
+  "consumo_leguminosas": true,
+  "observaciones": "Caso de empaste: sin diarrea, abdomen distendido del lado izquierdo, anorexia, rumia ausente, inquietud y dificultad respiratoria tras consumir pasturas tiernas y leguminosas."
+}
