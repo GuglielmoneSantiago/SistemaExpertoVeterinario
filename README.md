@@ -19,7 +19,7 @@ El razonamiento se realiza mediante encadenamiento hacia adelante: el sistema pa
 Desde la carpeta del proyecto:
 
 ```powershell
-cd "C:\Facu\Sistemas inteligentes\TP2"
+cd "C:\SistemaExpertoVeterinario"
 ```
 
 Abrir la interfaz grafica:
