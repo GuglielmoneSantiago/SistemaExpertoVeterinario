@@ -77,7 +77,7 @@ El sistema devuelve:
 ## Estructura del proyecto
 
 ```text
-TP2/
+SistemaExpertoVeterinario/s
   main.py
   README.md
   GUI/
